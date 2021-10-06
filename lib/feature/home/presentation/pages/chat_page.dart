@@ -28,7 +28,7 @@ class ChatPage extends GetView<ChatController> {
         child: Row(
           children: [
             Expanded(
-              flex: 5,
+              flex: 7,
               child: Container(
                 margin: EdgeInsets.only(left: Get.width * 0.05),
                 child: TextField(
@@ -45,17 +45,35 @@ class ChatPage extends GetView<ChatController> {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Obx(
-                () => InkWell(
-                  onTap: () => controller.isLoading.value
-                      ? null
-                      : controller.translate(),
-                  child: Icon(
-                    Icons.send,
-                    color:
-                        controller.isLoading.value ? Colors.grey : Colors.white,
-                  ),
+                () => Wrap(
+                  spacing: 10,
+                  direction: Axis.horizontal,
+                  children: [
+                    InkWell(
+                      onTap: () => controller.isLoading.value
+                          ? null
+                          : controller.switchTranslation(),
+                      child: Icon(
+                        Icons.swap_horiz,
+                        color: controller.isLoading.value
+                            ? Colors.grey
+                            : Colors.white,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => controller.isLoading.value
+                          ? null
+                          : controller.translate(),
+                      child: Icon(
+                        Icons.send,
+                        color: controller.isLoading.value
+                            ? Colors.grey
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             )

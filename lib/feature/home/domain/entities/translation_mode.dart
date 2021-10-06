@@ -1,0 +1,1 @@
+enum TranslationMode { enToId, idToEn }

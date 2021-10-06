@@ -5,26 +5,32 @@ import 'package:translator/feature/home/data/models/translate_models.dart';
 import 'package:translator/feature/home/domain/entities/translate.dart';
 
 abstract class RemoteDataSources {
-  Future<Translate> translate(String source);
+  Future<Translate> translate(
+      {required String sourceText,
+      required String sourceLang,
+      required String targetLang});
 }
 
 class RemoteDataSourcesImpl implements RemoteDataSources {
   final Client client;
 
   RemoteDataSourcesImpl({required this.client});
+
   @override
-  Future<Translate> translate(String source) async {
+  Future<Translate> translate(
+      {required String sourceText,
+      required String sourceLang,
+      required String targetLang}) async {
     try {
-      var targetLang = 'id';
       var url =
           'https://translate.google.com/translate_a/single?client=at&dt=t&dt=ld&dt=qca&dt=rm&dt=bd&dj=1&hl=' +
               targetLang +
               '&ie=UTF-8' +
               '&oe=UTF-8&inputm=2&otf=2&iid=1dd3b944-fa62-4b55-b330-74909a99969e';
       var data = {
-        'sl': 'en',
+        'sl': sourceLang,
         'tl': targetLang,
-        'q': source,
+        'q': sourceText,
       };
       var response = await client.post(Uri.parse(url), body: data, headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',

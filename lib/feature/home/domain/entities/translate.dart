@@ -36,3 +36,17 @@ final initMessage = Translate(
     sourceLang: '',
     targetLang: '',
     messageType: MessageType.translation);
+
+final switchEnToId = Translate(
+    source: '',
+    translation: 'English => Indonesian',
+    sourceLang: '',
+    targetLang: '',
+    messageType: MessageType.translation);
+
+final switchIdToEn = Translate(
+    source: '',
+    translation: 'Indonesian => English',
+    sourceLang: '',
+    targetLang: '',
+    messageType: MessageType.translation);

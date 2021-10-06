@@ -11,12 +11,21 @@ class GetTranslation implements UseCase<Translate, Params> {
 
   @override
   Future<Either<Failure, Translate>> call(Params params) async {
-    return await _repository.translate(params.sourceText);
+    return await _repository.translate(
+      sourceText: params.sourceText,
+      sourceLang: params.souceLang,
+      targetLang: params.targetLang,
+    );
   }
 }
 
 class Params {
   final String sourceText;
-
-  Params({required this.sourceText});
+  final String souceLang;
+  final String targetLang;
+  Params({
+    required this.sourceText,
+    required this.targetLang,
+    required this.souceLang,
+  });
 }

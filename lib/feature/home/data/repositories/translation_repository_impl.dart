@@ -13,9 +13,16 @@ class TranslationRepositoryImpl implements TranslationRepository {
   TranslationRepositoryImpl({required this.remote});
 
   @override
-  Future<Either<Failure, Translate>> translate(String source) async {
+  Future<Either<Failure, Translate>> translate(
+      {required String sourceText,
+      required String sourceLang,
+      required String targetLang}) async {
     try {
-      var result = await remote.translate(source);
+      var result = await remote.translate(
+        sourceText: sourceText,
+        sourceLang: sourceLang,
+        targetLang: targetLang,
+      );
       return Right(result);
     } on NetworkException {
       return Left(NetworkFailure());
