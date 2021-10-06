@@ -35,7 +35,7 @@ class ChatPage extends GetView<ChatController> {
                   controller: controller.textController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Ketik sesuatu',
+                    hintText: 'Type something',
                     hintStyle: TextStyle(
                       color: Colors.white.withOpacity(0.5),
                     ),
@@ -76,7 +76,7 @@ class ChatPage extends GetView<ChatController> {
           ),
           padding: EdgeInsets.all(12),
           constraints: BoxConstraints(
-            minHeight: Get.height * 0.1,
+            minHeight: Get.height * 0.05,
             minWidth: Get.width * 0.2,
           ),
           decoration: BoxDecoration(
@@ -98,42 +98,40 @@ class ChatPage extends GetView<ChatController> {
     );
   }
 
-  Widget _bot(Translate translate, {required bool isLastChat}) {
+  Widget _bot(Translate translate) {
     return Stack(
       children: [
-        Obx(
-          () => Container(
-            margin: EdgeInsets.only(
-              left: Get.width * 0.05,
-              top: Get.height * 0.03,
-            ),
-            padding: EdgeInsets.all(15),
-            constraints: BoxConstraints(
-              minHeight: Get.height * 0.05,
-              minWidth: Get.width * 0.2,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.blue,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20)),
-            ),
-            child: isLastChat && controller.isLoading.value
-                ? SizedBox(
-                    width: Get.width * 0.1,
-                    child: JumpingDotsProgressIndicator(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(
-                    translate.translation,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+        Container(
+          margin: EdgeInsets.only(
+            left: Get.width * 0.05,
+            top: Get.height * 0.03,
           ),
+          padding: EdgeInsets.all(15),
+          constraints: BoxConstraints(
+            minHeight: Get.height * 0.05,
+            minWidth: Get.width * 0.2,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)),
+          ),
+          child: translate.translation == null
+              ? SizedBox(
+                  width: Get.width * 0.1,
+                  child: JumpingDotsProgressIndicator(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                )
+              : Text(
+                  translate.translation!,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
         ),
         CircleAvatar(
           backgroundColor: AppColors.blue,
@@ -155,13 +153,12 @@ class ChatPage extends GetView<ChatController> {
     return Obx(
       () => SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => controller.chats[index].messageType ==
-                  MessageType.source
-              ? _sender(controller.chats[index])
-              : _bot(
-                  controller.chats[index],
-                  isLastChat: controller.chats[index] == controller.chats.last,
-                ),
+          (context, index) =>
+              controller.chats[index].messageType == MessageType.source
+                  ? _sender(controller.chats[index])
+                  : _bot(
+                      controller.chats[index],
+                    ),
           childCount: controller.chats.length,
         ),
       ),

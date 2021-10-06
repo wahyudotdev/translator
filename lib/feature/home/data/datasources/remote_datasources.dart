@@ -15,14 +15,14 @@ class RemoteDataSourcesImpl implements RemoteDataSources {
   @override
   Future<Translate> translate(String source) async {
     try {
-      var targetLang = 'en';
+      var targetLang = 'id';
       var url =
           'https://translate.google.com/translate_a/single?client=at&dt=t&dt=ld&dt=qca&dt=rm&dt=bd&dj=1&hl=' +
               targetLang +
               '&ie=UTF-8' +
               '&oe=UTF-8&inputm=2&otf=2&iid=1dd3b944-fa62-4b55-b330-74909a99969e';
       var data = {
-        'sl': 'id',
+        'sl': 'en',
         'tl': targetLang,
         'q': source,
       };
@@ -34,11 +34,13 @@ class RemoteDataSourcesImpl implements RemoteDataSources {
       if (response.statusCode == HttpStatus.ok) {
         var data = TranslateModels.fromJsonString(response.body);
         return data.toEntity();
+      } else if (response.statusCode == 302) {
+        throw RecaptchaException();
       } else {
         throw NetworkException();
       }
     } catch (e) {
-      throw NetworkException();
+      rethrow;
     }
   }
 }

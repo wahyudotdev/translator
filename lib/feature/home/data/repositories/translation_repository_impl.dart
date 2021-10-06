@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:translator/core/error/exception.dart';
 import 'package:translator/feature/home/data/datasources/remote_datasources.dart';
 import 'package:translator/feature/home/domain/entities/translate.dart';
@@ -16,6 +18,10 @@ class TranslationRepositoryImpl implements TranslationRepository {
       var result = await remote.translate(source);
       return Right(result);
     } on NetworkException {
+      return Left(NetworkFailure());
+    } on RecaptchaException {
+      return Left(RecaptchaFailure());
+    } on SocketException {
       return Left(NetworkFailure());
     }
   }
